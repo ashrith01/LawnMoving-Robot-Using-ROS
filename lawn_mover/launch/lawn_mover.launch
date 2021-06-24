@@ -1,0 +1,17 @@
+<launch>
+
+  <!-- Load the URDF model into the parameter server -->
+  <param name="robot_description" textfile="$(find lawn_mover)/urdf/lawn_mover.urdf"/>
+
+  <!-- Start Gazebo with an empty world and include the components -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find lawn_mover)/worlds/lawn_world.world"/>
+  </include>
+
+  <!--Spawn Bot in gazebo, taking the description from the parameter server -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model lawn_mover"/>
+
+  <!-- Start Required nodes -->
+  <node pkg="lawn_mover" type="follow_wall.py" name="wall_follower" />
+
+</launch>
